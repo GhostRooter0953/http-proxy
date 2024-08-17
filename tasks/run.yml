@@ -1,0 +1,17 @@
+---
+  - name: Copy docker-compose file
+    template:
+      src: templates/docker-compose.yml.j2
+      dest: /root/docker/docker-compose.yml
+    tags: update
+
+  - name: Run Docker Compose
+    command:
+      cmd: docker compose up -d
+      chdir: /root/docker
+    tags: update
+
+  - name: Clear Docker garbage
+    command:
+      cmd: docker system prune -af --volumes
+    tags: update

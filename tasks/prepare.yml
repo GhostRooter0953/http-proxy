@@ -1,0 +1,14 @@
+---
+  - name: Ensure htpasswd is installed
+    package:
+      name: apache2-utils
+      state: present
+
+  - name: Create directories
+    file:
+      path: /root/docker/durkaproxy
+      state: directory
+
+  - name: Generate htpasswd file
+    command:
+      cmd: htpasswd -cb /root/docker/durkaproxy/htpasswd {{ http_proxy_username }} {{ http_proxy_password }}

@@ -1,0 +1,28 @@
+services:
+  {{ http_proxy_name }}:
+    image: {{ http_proxy_image }}:{{ http_proxy_version }}
+    container_name: {{ http_proxy_name }}
+    hostname: {{ http_proxy_domain }}
+    ports:
+{% if http_proxy_tls == true %}
+      - "80:80"
+{% endif %}
+      - "{{ http_proxy_ports }}"
+    volumes:
+      - "/root/docker/durkaproxy/htpasswd:/etc/htpasswd"
+    command:
+{% if http_proxy_tls == true %}
+      - "-autocert"
+      - "-autocert-whitelist"
+      - "{{ http_proxy_domain }}"
+      - "-auth"
+      - "basicfile://?path=/etc/htpasswd"
+      - "-bind-address"
+      - "{{ http_proxy_bind }}"
+{% else %}
+      - "-auth"
+      - "basicfile://?path=/etc/htpasswd"
+      - "-bind-address"
+      - "{{ http_proxy_bind }}"
+{% endif %}
+    restart: unless-stopped
