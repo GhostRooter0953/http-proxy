@@ -2,9 +2,11 @@
 http_proxy_tls: true
 http_proxy_name: http-proxy
 http_proxy_domain: proxy.example.com
-http_proxy_username: yourusername
-http_proxy_password: yourpassword
 http_proxy_image: ghostrooter/durkaproxy
 http_proxy_version: latest
 http_proxy_bind: ":443"
 http_proxy_ports: "443:443"
+http_proxy_users:
+  - { login: "yourusername1", password: "yourpassword1" }
+  - { login: "yourusername2", password: "yourpassword2" }
+  - { login: "yourusername3", password: "yourpassword3" }

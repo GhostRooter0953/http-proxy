@@ -15,3 +15,8 @@
     command:
       cmd: docker system prune -af --volumes
     tags: update
+
+  - name: Restart proxy
+    command:
+      cmd: docker restart {{ http_proxy_name }}
+    tags: update

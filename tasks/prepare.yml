@@ -9,6 +9,15 @@
       path: /root/docker/durkaproxy
       state: directory
 
-  - name: Generate htpasswd file
-    command:
-      cmd: htpasswd -cb /root/docker/durkaproxy/htpasswd {{ http_proxy_username }} {{ http_proxy_password }}
+  - name: Recreate htpasswd file in one go
+    shell: |
+      rm -f /root/docker/durkaproxy/htpasswd
+      {% for u in http_proxy_users %}
+      {% if loop.first %}
+      htpasswd -cb /root/docker/durkaproxy/htpasswd {{ u.login }} {{ u.password }}
+      {% else %}
+      htpasswd -b  /root/docker/durkaproxy/htpasswd {{ u.login }} {{ u.password }}
+      {% endif %}
+      {% endfor %}
+    args:
+      executable: /bin/bash
